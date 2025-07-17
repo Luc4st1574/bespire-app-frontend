@@ -86,9 +86,3 @@
 
 ## 🌍 Variables de entorno útiles
 - NEXT_PUBLIC_GRAPHQL_ENDPOINT - URL del backend GraphQL
-
-
-## 🧑‍💻 Contacto
-
-- hectoracosta5@gmail.com
-- [GitHub](https://github.com/hector53).
