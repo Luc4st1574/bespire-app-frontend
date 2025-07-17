@@ -1,0 +1,309 @@
+@import "tailwindcss";
+
+
+
+@font-face {
+  font-family: 'GeneralSans-Extralight';
+  src: url('/src/fonts/general-sans/GeneralSans-Extralight.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Extralight.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Extralight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-ExtralightItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-ExtralightItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-ExtralightItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-ExtralightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Light';
+  src: url('/src/fonts/general-sans/GeneralSans-Light.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Light.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-LightItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-LightItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-LightItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Regular';
+  src: url('/src/fonts/general-sans/GeneralSans-Regular.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Regular.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-Italic';
+  src: url('/src/fonts/general-sans/GeneralSans-Italic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Italic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Medium';
+  src: url('/src/fonts/general-sans/GeneralSans-Medium.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Medium.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-MediumItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-MediumItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-MediumItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Semibold';
+  src: url('/src/fonts/general-sans/GeneralSans-Semibold.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Semibold.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-SemiboldItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-SemiboldItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-SemiboldItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-SemiboldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Bold';
+  src: url('/src/fonts/general-sans/GeneralSans-Bold.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Bold.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-BoldItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-BoldItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-BoldItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans-Variable';
+  src: url('/src/fonts/general-sans/GeneralSans-Variable.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-Variable.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-VariableItalic';
+  src: url('/src/fonts/general-sans/GeneralSans-VariableItalic.woff2') format('woff2'),
+       url('/src/fonts/general-sans/GeneralSans-VariableItalic.woff') format('woff'),
+       url('/src/fonts/general-sans/GeneralSans-VariableItalic.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+:root {
+  --color-brand-dark: #004049;
+  --color-brand-neon: #CEFFA3;
+  --color-brand-pale: #E3E9DE;
+  --color-brand-light: #FBFFF7;
+  --color-brand-green-light: #F3FEE7;
+  --color-brand-footer: #EBFDD8;
+  --color-brand-blue: #3A76FF;
+  --color-brand-yellow: #FFF780;
+  --color-brand-red: #F01616;
+  --color-brand-orange: #FDC870;
+  --color-brand-dark-blue: #11183F;
+}
+body {
+  /* Usar las variables CSS para aplicar los estilos globales */
+  background-color: #FBFFF7;
+  color: #181B1A; /* Asumiendo que text-black debería ser brand-dark para la coherencia del tema */
+  /* font-family se maneja mejor a través de la configuración de Tailwind theme.fontFamily */
+  font-family: 'GeneralSans-Variable', sans-serif;
+}
+.PhoneInputInput{
+  outline: none;
+}
+
+
+.input-phone{
+  border: 1px solid #D9D9D9;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+/* globals.css o styles.css */
+#nprogress .bar {
+  background: #181B1A !important; /* Color verde menta */
+  height: 3px !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #181B1A, 0 0 5px #181B1A !important;
+}
+#nprogress .spinner { display: none !important }
+
+.react-datepicker {
+  font-family: inherit;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 32px rgba(0,0,0,.14);
+  border: 1px solid #E2E6E4 !important;
+  font-size: 1rem;
+}
+.react-datepicker__header {
+  background: #F6FCF3;
+  border-bottom: 1px solid #E2E6E4 !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: #CDEFC2 !important;
+  color: #181B1A !important;
+  border-radius: 6px !important;
+}
+.react-datepicker__current-month {
+  font-weight: 600;
+  color: #5E6B66;
+}
+.react-datepicker__day {
+  border-radius: 6px !important;
+}
+
+.comment-editor-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d1d5db; /* Gris claro */
+  border-radius: 12px;
+  max-width: 600px;
+  background-color: #fff;
+  overflow: hidden; /* Para que los bordes redondeados se apliquen a los hijos */
+}
+
+.editor-inner {
+  position: relative;
+}
+
+.editor-input {
+  min-height: 80px;
+  padding: 16px;
+  font-size: 16px;
+  caret-color: #374151;
+  outline: none;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.editor-placeholder {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #9ca3af;
+  font-size: 16px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Estilos de texto de Lexical (mantener los mismos) */
+.editor-link { color: rgb(33, 111, 219); text-decoration: underline; }
+.editor-text-bold { font-weight: bold; }
+.editor-text-italic { font-style: italic; }
+.editor-text-underline { text-decoration: underline; }
+
+/* Contenedor de la barra de herramientas y botón */
+.comment-toolbar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+/* Barra de herramientas */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Espacio entre los iconos */
+}
+
+.toolbar .toolbar-item {
+  border: none;
+  background-color: transparent;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toolbar .toolbar-item svg {
+  width: 18px;
+  height: 18px;
+  color: #6b7280; /* Un gris oscuro para los íconos */
+}
+
+.toolbar .toolbar-item:hover svg {
+  color: #111827; /* Un color más oscuro al pasar el ratón */
+}
+
+.toolbar .toolbar-item.active {
+  background-color: #e5e7eb; /* Fondo gris para el botón activo */
+}
+
+.toolbar .toolbar-item.active svg {
+  color: #111827; /* Ícono oscuro cuando está activo */
+}
+
+
+.comment-submit-button {
+  background-color: #e5e7eb;
+  color: #4b5563;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s; /* Añade transición para opacity */
+}
+
+.comment-submit-button:hover {
+  background-color: #d1d5db;
+}
+
+/* NUEVOS ESTILOS PARA EL ESTADO DISABLED */
+.comment-submit-button:disabled {
+  background-color: #E2E6E4; /* Un gris aún más claro */
+  color: #9FAAA5; /* Texto más claro */
+  cursor: not-allowed; /* Cambia el cursor para indicar que no es clickeable */
+  opacity: 0.7; /* Ligeramente transparente */
+}
