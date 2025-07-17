@@ -21,7 +21,7 @@
 
 1. **Clona el repositorio**
    ```bash
-   git clone https://hector62@bitbucket.org/apturalabs/bespire-app-frontend.git
+   git clone 
    ```
 
 2. **Instala dependencias**
