@@ -4,15 +4,15 @@
 const actions = [
   {
     label: "Create Folder",
-    icon: "/assets/icons/icon_folders.svg",
+    icon: "/assets/icons/folders.svg",
   },
   {
     label: "Upload Files",
-    icon: "/assets/icons/icon_files.svg",
+    icon: "/assets/icons/files.svg",
   },
   {
     label: "Create a Doc",
-    icon: "/assets/icons/icon_docs.svg",
+    icon: "/assets/icons/docs.svg",
   },
 ];
 

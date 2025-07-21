@@ -33,8 +33,8 @@ interface FileListTableProps {
             </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-            {files.map((file) => (
-                <tr key={file.id} className="hover:bg-gray-50">
+            {files.map((file, index) => ( // Added 'index' to the map function
+                <tr key={`${file.id}-${index}`} className="hover:bg-gray-50"> {/* Modified key to combine id and index */}
                 <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
                     <img
@@ -48,7 +48,7 @@ interface FileListTableProps {
                 <td className="px-6 py-4 text-gray-600">{file.type}</td>
                 <td className="px-6 py-4">
                     {file.tags.length > 0 ? (
-                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                    <span className="bg-green-100 text-black text-xs font-medium px-2.5 py-1 rounded-full">
                         {file.tags[0]}
                     </span>
                     ) : (

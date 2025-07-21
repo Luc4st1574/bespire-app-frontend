@@ -21,6 +21,16 @@ export const mockFiles: MockFile[] = [
     icon: 'folder',
   },
   {
+    id: '1',
+    name: 'Branding Files',
+    type: 'Folder',
+    tags: ['Email Marketing'],
+    access: 'All',
+    lastModified: 'Dec 21, 2024',
+    modifiedBy: 'me',
+    icon: 'folder',
+  },
+  {
     id: '2',
     name: 'Waymax Pitch Deck 2024.pptx',
     type: 'MS Powerpoint File',
