@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import StepGuard from "@/components/StepGuard";
-
 import { useAuth } from "@/hooks/useAuth";
-
 import { useMutation } from "@apollo/client";
 import { CREATE_CHECKOUT_SESSION } from "@/graphql/mutations/createCheckoutSession";
 import OnboardingLayout from "@/components/layouts/OnboardingLayout";
@@ -94,11 +92,6 @@ export default function ChoosePlanPage() {
     setLoading(true);
     console.log("handleSelectPlan", planId)
     try {
-      //updateData({ plan: planId as "starter" | "growth" | "pro" });
-
-     
-
-      // Ahora redirigimos al checkout de Stripe
       const { data } = await createCheckoutSession({
         variables: {
           plan: planId,
@@ -112,7 +105,8 @@ export default function ChoosePlanPage() {
     } catch (error) {
       console.error("Error creating checkout session:", error);
       alert("Failed to redirect to payment.");
-    } 
+      setLoading(false); // Reset loading state on error
+    }
   };
 
   return (
@@ -123,27 +117,27 @@ export default function ChoosePlanPage() {
             Plans that grow with your vision, whether you’re a team of one or a
             powerhouse crew.
           </p>
-          <div className="grid md:grid-cols-3 gap-2  text-left">
+          <div className="grid md:grid-cols-3 gap-2   text-left">
             {plansPrices.map((plan) => (
               <div
-              key={plan.id}
-              onClick={() => handlePlanSelect(plan.id)}
-              className={clsx(
-                "rounded-2xl cursor-pointer overflow-hidden flex flex-col justify-between border transition-all duration-200",
-                "shadow-outline-md", // Puedes personalizar esta sombra
-                selectedPlan === plan.id
-                  ? "border-brand-dark bg-gray-100"
-                  : "border-[#E2E6E4] hover:bg-[#F6F8F5] hover:border-[#758C5D]",
-              )}
+                key={plan.id}
+                onClick={() => handlePlanSelect(plan.id)}
+                className={clsx(
+                  "rounded-2xl cursor-pointer overflow-hidden flex flex-col justify-between border transition-all duration-200",
+                  "shadow-outline-md", // Puedes personalizar esta sombra
+                  selectedPlan === plan.id
+                    ? "border-brand-dark bg-gray-100"
+                    : "border-[#E2E6E4] hover:bg-[#F6F8F5] hover:border-[#758C5D]",
+                )}
               >
                 <div className="p-6 ">
                   <div className="flex gap-4 items-center">
                   <img
-                    src={plan.icon}
-                    alt={`${plan.name} icon`}
-                    className="w-5 h-5"
-                  />
-                  <h3 className="text-lg font-semibold ">{plan.name}</h3>
+                      src={plan.icon}
+                      alt={`${plan.name} icon`}
+                      className="w-5 h-5"
+                    />
+                    <h3 className="text-lg font-semibold ">{plan.name}</h3>
                   </div>
                   <p className=" text-xs graySmall">{plan.description}</p>
 
@@ -171,11 +165,11 @@ export default function ChoosePlanPage() {
           </div>
         </div>
         <FooterNav
-        loading={loading}
-  isNextDisabled={!selectedPlan}
-  onNext={() => handleSelectPlan(selectedPlan!)}
-  textFooter="By continuing, you agree to Bespire’s Terms of Use <br> and confirm you have read our Privacy Policy."
-/>
+          loading={loading}
+          isNextDisabled={!selectedPlan}
+          onNext={() => handleSelectPlan(selectedPlan!)}
+          textFooter="By continuing, you agree to Bespire’s Terms of Use <br> and confirm you have read our Privacy Policy."
+        />
 
       </OnboardingLayout>
     </StepGuard>
