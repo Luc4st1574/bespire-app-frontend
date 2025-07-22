@@ -11,7 +11,7 @@ export interface MockFile {
 
 export const mockFiles: MockFile[] = [
   {
-    id: '1',
+    id: '0',
     name: 'Christmas Campaign',
     type: 'Folder',
     tags: ['Email Marketing'],

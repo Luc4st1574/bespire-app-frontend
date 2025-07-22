@@ -3,13 +3,20 @@
 
 import { useState } from "react";
 import FileListTable from "./FileListTable";
-import { mockFiles } from "@/data/mock-files";
+import { MockFile } from "@/data/mock-files";
 import { ChevronDown } from "lucide-react";
 import FileGrid from "./FileGrid";
+import Link from "next/link";
 
 type ViewMode = "list" | "grid";
 
-export default function AllFilesSection() {
+interface AllFilesSectionProps {
+  files: MockFile[]; // Files to display, already filtered
+  filterMessage: string | null; // Message to show when a filter is active
+  showFilterMessage: boolean; // Boolean to control message visibility
+}
+
+export default function AllFilesSection({ files, filterMessage, showFilterMessage }: AllFilesSectionProps) {
   const [view, setView] = useState<ViewMode>("list");
   const [isContentVisible, setIsContentVisible] = useState(true);
 
@@ -62,12 +69,21 @@ export default function AllFilesSection() {
       </div>
 
       {/* Content */}
-      {isContentVisible && ( // Conditionally render the content
+      {isContentVisible && (
         <div>
           {view === "list" ? (
-            <FileListTable files={mockFiles} />
+            <FileListTable files={files} />
           ) : (
-            <FileGrid files={mockFiles} />
+            <FileGrid files={files} />
+          )}
+
+          {showFilterMessage && filterMessage && (
+            <div className="mt-6 text-center text-gray-600">
+              <p className="inline-block mr-1">{filterMessage}</p>
+              <Link href="/files" className="text-black underline inline-block">
+                File manager
+              </Link>
+            </div>
           )}
         </div>
       )}

@@ -19,8 +19,14 @@ import { useState } from "react";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useAppContext } from "@/context/AppContext";
+// Removed useRouter, usePathname, useSearchParams as they are now handled by SidebarMenuSection or not directly needed here
 
 export default function Sidebar() {
+  const [showFeedback, setShowFeedback] = useState(false);
+  const { user, workspace } = useAppContext();
+  const { logout } = useAuthActions();
+
+  // "File Manager" is now structured with children for SidebarMenuSection to handle
   const mainMenu = [
     { label: "Dashboard", href: "/dashboard", icon: IconDashboard },
     {
@@ -32,16 +38,16 @@ export default function Sidebar() {
     { label: "Brands", href: "/brands", icon: IconBrands },
     {
       label: "File Manager",
-      href: "/files",
+      href: "/files", // Base href for the File Manager page
       icon: IconFileManager,
       children: [
         {
           label: "Folders",
-          href: "/files/folders",
-          icon: IconFolders,
+          href: "/files?view=folders", // Updated href with query param
+          icon: IconFolders, // These icons are strings pointing to public assets
         },
-        { label: "Files", href: "/files/files", icon: IconFiles },
-        { label: "Docs", href: "/files/docs", icon: IconDocs },
+        { label: "Files", href: "/files?view=files", icon: IconFiles }, // Updated href with query param
+        { label: "Docs", href: "/files?view=docs", icon: IconDocs },     // Updated href with query param
       ],
     },
   ];
@@ -59,12 +65,6 @@ export default function Sidebar() {
     { label: "Settings", href: "/settings", icon: Settings },
   ];
 
-  const [showFeedback, setShowFeedback] = useState(false);
-const { user, workspace } = useAppContext();
-  const {  logout } = useAuthActions();
-
-  console.log("Sidebar user", user);
-
   const handleLogout = async () => {
     console.log("logout")
     try {
@@ -72,22 +72,24 @@ const { user, workspace } = useAppContext();
     } catch (err) {
       console.error("Error logging out:", err);
       alert("Failed to logout.");
-    } 
+    }
   };
+
   return (
-    <aside className="w-64 bg-[#FDFEFD]  px-4 py-6 flex flex-col justify-between text-sm text-brand-dark">
+    <aside className="w-64 bg-[#FDFEFD] px-4 py-6 flex flex-col justify-between text-sm text-brand-dark">
       {/* Logo */}
       <div>
         <div className="mb-8">
           <a href="/dashboard">
-          <img
-            src="/assets/logos/logo_bespire.svg"
-            className="h-8 "
-            alt="Bespire"
-          /></a>
+            <img
+              src="/assets/logos/logo_bespire.svg"
+              className="h-8 "
+              alt="Bespire"
+            />
+          </a>
         </div>
 
-        {/* Main menu */}
+        {/* Main menu - SidebarMenuSection will now handle the File Manager item */}
         <SidebarMenuSection items={mainMenu} />
 
         {/* Explore menu */}
@@ -99,7 +101,7 @@ const { user, workspace } = useAppContext();
         <SidebarMenuSection items={settingsMenu} />
 
         <AccountDropdown
-        //@ts-ignore
+          //@ts-ignore
           workspace={workspace?.companyName}
           role={user?.role || ""}
           //@ts-ignore
@@ -126,7 +128,6 @@ const { user, workspace } = useAppContext();
         />
       </div>
       {showFeedback && <FeedbackModal isOpen={showFeedback} onClose={() => setShowFeedback(false)} />}
-
     </aside>
   );
 }
