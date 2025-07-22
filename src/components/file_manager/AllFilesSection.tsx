@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -7,7 +6,8 @@ import { MockFile } from "@/data/mock-files";
 import { ChevronDown } from "lucide-react";
 import FileGrid from "./FileGrid";
 import Link from "next/link";
-
+import IconList from "@/assets/icons/icon_list.svg";
+import IconGrid from "@/assets/icons/icon_grid.svg";
 type ViewMode = "list" | "grid";
 
 interface AllFilesSectionProps {
@@ -31,6 +31,7 @@ export default function AllFilesSection({ files, filterMessage, showFilterMessag
         <h2 className="text-xl font-medium">All Files</h2>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
+
             <span className="text-sm font-medium text-gray-600">Filter</span>
             <button
               type="button"
@@ -43,25 +44,25 @@ export default function AllFilesSection({ files, filterMessage, showFilterMessag
             </button>
           </div>
 
-          <div className="flex items-center bg-gray-100 rounded-full p-1">
+          <div className="flex items-center bg-white rounded-full border-2 border-[#CEFFA3] p-1">
             <button
               type="button"
               onClick={() => setView("list")}
               className={`px-4 py-1 text-sm font-medium flex items-center gap-2 rounded-full transition-colors duration-200 ${
-                view === "list" ? "bg-[rgb(206,255,163)] shadow-sm text-black" : "text-gray-600"
+                view === "list" ? "bg-[#CEFFA3] shadow-sm text-black" : "text-gray-300"
               }`}
             >
-              <img src="/assets/icons/icon_list.svg" alt="List view" className="w-4 h-4" />
+              <IconList className={`w-4 h-4 ${view === "list" ? "text-black" : "text-gray-300"}`} />
               List
             </button>
             <button
               type="button"
               onClick={() => setView("grid")}
               className={`px-4 py-1 text-sm font-medium flex items-center gap-2 rounded-full transition-colors duration-200 ${
-                view === "grid" ? "bg-[rgb(206,255,163)] shadow-sm text-black" : "text-gray-600"
+                view === "grid" ? "bg-[#CEFFA3] shadow-sm text-black" : "text-gray-300"
               }`}
             >
-              <img src="/assets/icons/icon_grid.svg" alt="Grid view" className="w-4 h-4" />
+              <IconGrid className={`w-4 h-4 ${view === "grid" ? "text-black" : "text-gray-300"}`} />
               Grid
             </button>
           </div>
@@ -71,11 +72,7 @@ export default function AllFilesSection({ files, filterMessage, showFilterMessag
       {/* Content */}
       {isContentVisible && (
         <div>
-          {view === "list" ? (
-            <FileListTable files={files} />
-          ) : (
-            <FileGrid files={files} />
-          )}
+          {view === "list" ? <FileListTable files={files} /> : <FileGrid files={files} />}
 
           {showFilterMessage && filterMessage && (
             <div className="mt-6 text-center text-gray-600">
