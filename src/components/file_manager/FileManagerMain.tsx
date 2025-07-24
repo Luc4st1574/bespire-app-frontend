@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { MockFile } from "@/data/mock-files";
 import AllFilesSection from "./AllFilesSection";
 import GetStartedFileManager from "./GetStartedFileManager";
@@ -36,21 +35,6 @@ export default function FileManagerMain({ files: initialFiles, filterMessage, sh
     };
     setFiles((prevFiles) => [newFolder, ...prevFiles]);
     setCreateFolderModalOpen(false);
-
-    toast.custom(
-      (t) => (
-        <div
-          className={`${
-            t.visible ? 'animate-enter' : 'animate-leave'
-          } flex items-center gap-3 rounded-md bg-light-black px-4 py-3 text-white shadow-lg`}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/icons/completed.svg" width={20} height={20} alt="success" />
-          <p className="text-sm font-semibold">Folder created</p>
-        </div>
-      ),
-      { position: 'bottom-left', duration: 3000 },
-    );
   };
 
   return (
