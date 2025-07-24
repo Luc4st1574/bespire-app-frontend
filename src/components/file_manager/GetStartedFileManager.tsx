@@ -16,7 +16,11 @@ const actions = [
   },
 ];
 
-export default function GetStartedFileManager() {
+interface GetStartedFileManagerProps {
+  onActionClick: (actionLabel: string) => void;
+}
+
+export default function GetStartedFileManager({ onActionClick }: GetStartedFileManagerProps) {
   return (
     <section>
       <h2 className="text-xl font-medium mb-4">Get Started</h2>
@@ -24,7 +28,7 @@ export default function GetStartedFileManager() {
         {actions.map((action) => (
           <div
             key={action.label}
-            // Added a fixed width using w-40
+            onClick={() => onActionClick(action.label)}
             className="w-40 bg-white p-3 border border-gray-200 rounded-md flex flex-col items-start gap-2 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <img src={action.icon} alt="" className="w-6 h-6" />

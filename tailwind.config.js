@@ -1,4 +1,6 @@
 /**  {import('tailwindcss').Config} */
+import forms from '@tailwindcss/forms';
+
 module.exports = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -20,6 +22,9 @@ module.exports = {
             "brand-red": "var(--color-brand-red)",
             "brand-orange": "var(--color-brand-orange)",
             "brand-dark-blue": "var(--color-brand-dark-blue)",
+            "primary-green": "#CEFFA3",
+            "dark-green": "#697d67",
+            "light-black": "#1B1B1B",
           },
       safelist: [
         "top-[200px]",
@@ -40,5 +45,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    forms,
+  ],
 };

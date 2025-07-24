@@ -6,7 +6,7 @@ export interface MockFile {
   access: 'All' | 'Team' | 'Private';
   lastModified: string;
   modifiedBy: string;
-  icon: string; // This will now be the filename or 'folder'
+  icon: string;
 }
 
 export const mockFiles: MockFile[] = [
