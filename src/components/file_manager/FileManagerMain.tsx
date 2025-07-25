@@ -1,57 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { MockFile } from "@/data/mock-files";
 import AllFilesSection from "./AllFilesSection";
-import GetStartedFileManager from "./GetStartedFileManager";
-import CreateFolderModal from "../modals/CreateFolderModal";
+import GetStartedFileManager from "./FileActionButtons";
 
 interface FileManagerMainProps {
   files: MockFile[];
+  onFolderCreated: (newFolder: MockFile) => void;
+  onDeleteFolder: (folderId: string) => void; // Add prop for delete handler
   filterMessage: string | null;
   showFilterMessage: boolean;
+  activeFilter: string;
 }
 
-export default function FileManagerMain({ files: initialFiles, filterMessage, showFilterMessage }: FileManagerMainProps) {
-  const [files, setFiles] = useState<MockFile[]>(initialFiles);
-  const [isCreateFolderModalOpen, setCreateFolderModalOpen] = useState(false);
-
-  const handleActionClick = (actionLabel: string) => {
-    if (actionLabel === "Create Folder") {
-      setCreateFolderModalOpen(true);
+export default function FileManagerMain({
+  files,
+  onFolderCreated,
+  onDeleteFolder, // Receive delete handler
+  filterMessage,
+  showFilterMessage,
+  activeFilter,
+}: FileManagerMainProps) {
+  const filteredFiles = useMemo(() => {
+    if (activeFilter === "all" || !activeFilter) {
+      return files;
     }
-  };
-
-  const handleCreateFolder = (details: { name: string; tags: string[]; access: MockFile['access'] }) => {
-    const newFolder: MockFile = {
-      id: `folder-${Date.now()}`,
-      name: details.name,
-      type: 'Folder',
-      tags: details.tags,
-      access: details.access,
-      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      modifiedBy: 'me',
-      icon: 'folder',
-    };
-    setFiles((prevFiles) => [newFolder, ...prevFiles]);
-    setCreateFolderModalOpen(false);
-  };
+    return files.filter((file) => {
+      const fileType = file.type.toLowerCase();
+      if (activeFilter === "folders") {
+        return fileType === "folder";
+      }
+      if (activeFilter === "files") {
+        return ["ms powerpoint file", "pdf file", "ms word file", "ms excel sheet"].includes(fileType);
+      }
+      if (activeFilter === "documents") {
+        return ["ms word file"].includes(fileType);
+      }
+      return false;
+    });
+  }, [files, activeFilter]);
 
   return (
     <>
       <div className="flex flex-col gap-8">
-        <GetStartedFileManager onActionClick={handleActionClick} />
+        <GetStartedFileManager
+          onFolderCreated={onFolderCreated}
+          onDeleteFolder={onDeleteFolder}
+        />
         <AllFilesSection
-          files={files}
+          files={filteredFiles}
           filterMessage={filterMessage}
           showFilterMessage={showFilterMessage}
         />
       </div>
-      <CreateFolderModal
-        isOpen={isCreateFolderModalOpen}
-        onClose={() => setCreateFolderModalOpen(false)}
-        onCreateFolder={handleCreateFolder}
-      />
     </>
   );
 }

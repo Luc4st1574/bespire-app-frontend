@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   Dialog,
@@ -10,7 +9,7 @@ import {
 } from "@headlessui/react";
 import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import { useForm, FormProvider} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import {
@@ -24,10 +23,7 @@ import { GET_SERVICES_AND_BRANDS } from "@/graphql/queries/getServicesAndBrands"
 import { CREATE_REQUEST } from "@/graphql/mutations/requests/createRequest";
 import { showSuccessToast } from "../ui/toast";
 import SpinnerSmall from "../ui/Spinner";
-import { useWorkspace } from "@/hooks/useWorkspace";
 import { useRequests } from "@/hooks/useRequests";
-import { useAuth } from "@/hooks/useAuth";
-import { useModalRequests } from "@/hooks/useModalRequest";
 import { useAppContext } from "@/context/AppContext";
 import { useRequestSubtasksLazy } from "@/hooks/useRequestSubtasks";
 
@@ -67,7 +63,6 @@ export default function CreateRequestModal({
     formState: { errors },
     setValue,
     watch,
-    control,
     reset,
   } = methods;
 
@@ -75,12 +70,12 @@ export default function CreateRequestModal({
   const workspaceId = workspace?._id;
 
   const { refetch } = useRequests();
-   const {
+    const {
       fetchSubtasks,
     } = useRequestSubtasksLazy();
   const [errorSubmit, setErrorSubmit] = useState<string | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const { data, loading } = useQuery(GET_SERVICES_AND_BRANDS, {
+  const { data } = useQuery(GET_SERVICES_AND_BRANDS, {
     variables: { workspaceId },
     skip: !workspaceId,
     fetchPolicy: "cache-first", // o 'cache-and-network', 'network-only', etc.
@@ -134,11 +129,6 @@ export default function CreateRequestModal({
 
   const [
     createRequest,
-    {
-      data: createRequestData,
-      loading: createRequestLoading,
-      error: createRequestError,
-    },
   ] = useMutation(CREATE_REQUEST);
 
   const attachments = watch("attachments") as UploadedFile[];
@@ -190,7 +180,6 @@ export default function CreateRequestModal({
         reset();
         showSuccessToast("Request Created!");
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // Apollo lanza un error, lo puedes mostrar aquí
       console.error("Error creating request:", err.message);
@@ -220,6 +209,7 @@ export default function CreateRequestModal({
                 <button
                   onClick={onClose}
                   type="button"
+                  title="Close"
                   className="text-gray-600 hover:text-black"
                 >
                   <X className="w-5 h-5" />

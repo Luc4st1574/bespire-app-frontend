@@ -31,7 +31,7 @@ export default function ChangeCardPaymentElementModal({
         try {
           const { data } = await createSetupIntent({ variables: { workspaceId } });
           setClientSecret(data.createSetupIntent);
-        } catch (e) {
+        } catch {
           setClientSecret(null);
         }
       })();
@@ -125,7 +125,7 @@ function ChangeCardPaymentForm({
     }
 
     setLoading(false);
-    onSuccess && onSuccess();
+    onSuccess();
     onClose();
   };
 

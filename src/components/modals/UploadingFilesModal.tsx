@@ -1,10 +1,25 @@
 import { Fragment, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, TransitionChild } from "@headlessui/react";
 import { X, CheckCircle, Loader2 } from "lucide-react";
 import clsx from "clsx";
 import { getFileIcon } from "@/utils/getFileIcon";
+import Image from 'next/image';
 
-export function UploadingFilesModal({ files, open, onRemove, onClose }) {
+interface UploadingFile {
+  file: File;
+  progress?: number;
+  done?: boolean;
+  error?: boolean;
+}
+
+interface UploadingFilesModalProps {
+  files: UploadingFile[];
+  open: boolean;
+  onRemove: (index: number) => void;
+  onClose: () => void;
+}
+
+export function UploadingFilesModal({ files, open, onRemove, onClose }: UploadingFilesModalProps) {
   const total = files.length;
   const doneCount = files.filter((f) => f.done).length;
   const percent =
@@ -31,7 +46,7 @@ export function UploadingFilesModal({ files, open, onRemove, onClose }) {
         onClose={() => {}}
       >
         <div className="absolute bottom-6 right-8 pointer-events-none">
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="transition-transform duration-200"
             enterFrom="translate-y-8 opacity-0"
@@ -47,8 +62,10 @@ export function UploadingFilesModal({ files, open, onRemove, onClose }) {
               <ul className="space-y-3 mb-3 max-h-[220px] overflow-auto">
                 {files.map((f, idx) => (
                   <li key={idx} className="flex items-center gap-2">
-                    <img
+                    <Image
                       src={getFileIcon(f.file.name)}
+                      width={32}
+                      height={32}
                       className="w-8 h-8"
                       alt=""
                     />
@@ -78,9 +95,9 @@ export function UploadingFilesModal({ files, open, onRemove, onClose }) {
                         <div
                           className={clsx(
                             "h-2 rounded transition-all",
-                            f.done ? "bg-[#97b99e]" : "bg-[#758C5D]"
+                            f.done ? "bg-[#97b99e]" : "bg-[#758C5D]",
+                            `w-[${f.progress}%]`
                           )}
-                          style={{ width: `${f.progress}%` }}
                         />
                       </div>
                     </div>
@@ -103,7 +120,7 @@ export function UploadingFilesModal({ files, open, onRemove, onClose }) {
                 </span>
               </div>
             </div>
-          </Transition.Child>
+          </TransitionChild>
         </div>
       </Dialog>
     </Transition>

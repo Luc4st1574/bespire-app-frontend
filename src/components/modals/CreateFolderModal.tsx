@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import { MockFile } from '@/data/mock-files';
 import { X } from 'lucide-react';
 import CustomSelect from './CustomSelect';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import FolderCreatedToast from '../ui/FolderCreatedToast';
 
 const availableTags = [
@@ -19,23 +20,17 @@ const accessOptions = [
 interface CreateFolderModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreateFolder: (details: { name: string; tags: string[]; access: MockFile['access'] }) => void;
+  onCreateFolder: (newFolder: MockFile) => void;
+  onDeleteFolder: (folderId: string) => void;
 }
 
-const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, onCreateFolder }) => {
+const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, onCreateFolder, onDeleteFolder }) => {
+  // --- All internal state and logic remains the same ---
   const [folderName, setFolderName] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [access, setAccess] = useState<MockFile['access']>('All');
   const [isLoading, setIsLoading] = useState(false);
   const isFormValid = folderName.trim() !== '';
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    if (isOpen) document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
 
   const resetForm = () => {
     setFolderName('');
@@ -48,111 +43,144 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
     if (!isFormValid) return;
     setIsLoading(true);
 
-    toast.custom(
-      (t) => <FolderCreatedToast t={t} />,
+    const newFolder: MockFile = {
+      id: `folder-${Date.now()}`,
+      name: folderName,
+      type: 'Folder',
+      tags: selectedTag ? [selectedTag] : [],
+      access: access,
+      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      modifiedBy: 'me',
+      icon: 'folder',
+    };
+
+    onCreateFolder(newFolder);
+
+    // --- Sonner Toast Implementation ---
+    // Generate a unique ID for the toast
+    const toastId = `folder-created-${newFolder.id}`;
+    
+    // Call sonner's toast with the custom component
+    // Pass the necessary props: toastId, folderId, and the onUndo function
+    toast(
+      <FolderCreatedToast
+        toastId={toastId}
+        folderId={newFolder.id}
+        onUndo={onDeleteFolder}
+      />,
       {
-        duration: 3000,
-        id: 'folder-created-toast',
+        id: toastId,
+        duration: 4000,
       }
     );
-
-    setTimeout(() => {
-      onCreateFolder({
-        name: folderName,
-        tags: selectedTag ? [selectedTag] : [],
-        access: access,
-      });
-      
-      setIsLoading(false);
-      onClose();
-      resetForm();
-    }, 500);
+    
+    setIsLoading(false);
+    onClose();
+    resetForm();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <>
-      <div
-        className="fixed inset-0 z-40 flex items-center justify-center bg-gray-900/30"
-        onClick={onClose}
-        role="dialog"
-        aria-modal="true"
-      >
-        <div
-          className="relative w-full max-w-lg rounded-lg bg-white shadow-xl"
-          onClick={(e) => e.stopPropagation()}
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <div className="flex items-center justify-between px-6 pt-6">
-            <h3 className="text-xl font-medium text-gray-900">New Folder</h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
-              aria-label="Close modal"
-              title="Close"
+          <div className="fixed inset-0 bg-gray-900/30" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              <X className="h-5 w-5" />
-            </button>
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+                <div className="flex items-center justify-between px-6 pt-6">
+                  <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-900">
+                    New Folder
+                  </Dialog.Title>
+                  <button
+                    onClick={onClose}
+                    className="text-gray-400 hover:text-gray-600"
+                    aria-label="Close modal"
+                    title="Close"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                  <div className="space-y-6 bg-white p-6">
+                    <div>
+                      <label htmlFor="folderName" className="mb-2 block text-sm font-medium text-gray-700">
+                        Folder name
+                      </label>
+                      <input
+                        id="folderName"
+                        type="text"
+                        placeholder="Enter folder name"
+                        className="block w-full rounded-md border border-gray-300 px-4 py-3 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                        value={folderName}
+                        onChange={(e) => setFolderName(e.target.value)}
+                        required
+                        autoFocus
+                      />
+                    </div>
+                    
+                    <div className="flex items-start gap-4">
+                      <CustomSelect
+                        label="Tag"
+                        value={selectedTag}
+                        onChange={setSelectedTag}
+                        options={availableTags}
+                      />
+                      <CustomSelect
+                        label="Access"
+                        value={access}
+                        onChange={(val) => setAccess(val as MockFile['access'])}
+                        options={accessOptions}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-4 px-6 py-4">
+                    <button
+                      type="button"
+                      className="w-1/2 rounded-full border border-gray-500 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                      onClick={onClose}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className={`w-1/2 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-colors ${
+                        isFormValid
+                          ? 'bg-[#697d67] hover:bg-[#596b57]'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
+                      disabled={!isFormValid || isLoading}
+                    >
+                      {isLoading ? 'Creating...' : 'Create Folder'}
+                    </button>
+                  </div>
+                </form>
+              </Dialog.Panel>
+            </Transition.Child>
           </div>
-
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-6 bg-white p-6">
-              <div>
-                <label htmlFor="folderName" className="mb-2 block text-sm font-medium text-gray-700">
-                  Folder name
-                </label>
-                <input
-                  id="folderName"
-                  type="text"
-                  placeholder="Enter folder name"
-                  className="block w-full rounded-md border border-gray-300 px-4 py-3 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                  value={folderName}
-                  onChange={(e) => setFolderName(e.target.value)}
-                  required
-                  autoFocus
-                />
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <CustomSelect
-                  label="Tag"
-                  value={selectedTag}
-                  onChange={setSelectedTag}
-                  options={availableTags}
-                />
-                <CustomSelect
-                  label="Access"
-                  value={access}
-                  onChange={(val) => setAccess(val as MockFile['access'])}
-                  options={accessOptions}
-                />
-              </div>
-            </div>
-
-            <div className="flex space-x-4 px-6 py-4">
-              <button
-                type="button"
-                className="w-1/2 rounded-full border border-gray-500 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-                onClick={onClose}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={`w-1/2 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition-colors ${
-                  isFormValid
-                    ? 'bg-[#697d67] hover:bg-[#596b57]'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
-                disabled={!isFormValid || isLoading}
-              >
-                {isLoading ? 'Creating...' : 'Create Folder'}
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
-    </>
+      </Dialog>
+    </Transition>
   );
 };
 

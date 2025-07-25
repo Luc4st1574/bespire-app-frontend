@@ -3,6 +3,22 @@ import { getFileIcon } from "@/utils/getFileIcon";
 import { formatDate, truncateFileName } from "@/utils/utils";
 import { Download, X } from "lucide-react";
 
+type FileType = {
+  id: string;
+  name: string;
+  uploadedAt: string | Date;
+  uploadedBy: string;
+};
+
+type FileListTableProps = {
+  files: FileType[];
+  selectMode: boolean;
+  selected: string[];
+  onToggleSelect: (id: string) => void;
+  onDelete: (id: string) => void;
+  onDownload: (file: FileType) => void;
+};
+
 export default function FileListTable({
   files,
   selectMode,
@@ -10,10 +26,10 @@ export default function FileListTable({
   onToggleSelect,
   onDelete,
   onDownload,
-}) {
+}: FileListTableProps) {
   return (
     <ul>
-      {files.map((f) => (
+      {files.map((f: FileType) => (
         <li
           key={f.id}
           className="flex items-center gap-2 py-2 hover:bg-[#fafcf8]"
@@ -24,6 +40,8 @@ export default function FileListTable({
               checked={selected.includes(f.id)}
               onChange={() => onToggleSelect(f.id)}
               className="mx-1"
+              title={`Select file ${f.name}`}
+              aria-label={`Select file ${f.name}`}
             />
           )}
           {/* ICON */}
@@ -34,20 +52,26 @@ export default function FileListTable({
             <div className="text-xs text-[#5E6B66] flex items-center gap-1">
               <img src="/assets/icons/cloud-check.svg" alt="" />
               <span>
-                {formatDate(f.uploadedAt)}, by {f.uploadedBy}
+                {formatDate(typeof f.uploadedAt === "string" ? f.uploadedAt : f.uploadedAt.toISOString())}, by {f.uploadedBy}
               </span>
             </div>
           </div>
           <button
+            type="button"
             className="text-gray-400 hover:text-gray-700"
             onClick={() => onDownload(f)}
+            title={`Download ${f.name}`}
+            aria-label={`Download ${f.name}`}
           >
             <Download size={18} />
           </button>
           {selectMode && (
             <button
+              type="button"
               className="text-gray-400 hover:text-red-600"
               onClick={() => onDelete(f.id)}
+              title={`Delete ${f.name}`}
+              aria-label={`Delete ${f.name}`}
             >
               <X size={18} />
             </button>

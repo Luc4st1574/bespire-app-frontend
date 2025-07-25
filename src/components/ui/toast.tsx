@@ -19,6 +19,7 @@ export const showSuccessToast = (message: string) => {
       //@ts-ignore
         onClick={() => toast.dismiss(t.id)}
         className="text-[#181B1A] hover:text-black border-l border-gray-200"
+        title="Dismiss"
       >  
         <X className="w-8 h-8" />
       </button>
@@ -43,9 +44,12 @@ export const showErrorToast = (message: string) => {
         //@ts-ignore
         onClick={() => toast.dismiss(t.id)}
         className="text-[#721C24] hover:text-black border-l border-gray-200"
+        title="Dismiss"
       >
         <X className="w-8 h-8" />
       </button>
     </div>
   ));
 };
+
+export default toast

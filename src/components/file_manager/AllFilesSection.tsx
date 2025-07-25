@@ -11,9 +11,9 @@ import IconGrid from "@/assets/icons/icon_grid.svg";
 type ViewMode = "list" | "grid";
 
 interface AllFilesSectionProps {
-  files: MockFile[]; // Files to display, already filtered
-  filterMessage: string | null; // Message to show when a filter is active
-  showFilterMessage: boolean; // Boolean to control message visibility
+  files: MockFile[]; 
+  filterMessage: string | null;
+  showFilterMessage: boolean;
 }
 
 export default function AllFilesSection({ files, filterMessage, showFilterMessage }: AllFilesSectionProps) {
