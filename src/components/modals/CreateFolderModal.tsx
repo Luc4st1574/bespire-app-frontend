@@ -1,13 +1,14 @@
 import React, { useState, Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { MockFile } from '@/data/mock-files';
 import { X } from 'lucide-react';
-import CustomSelect from './CustomSelect';
 import { toast } from 'sonner';
 import FolderCreatedToast from '../ui/FolderCreatedToast';
 import TagsData from '@/data/tags.json';
+import CustomSelect from './Selects/CustomSelect';
+import CreatableSelect from './Selects/CreatableSelect';
 
-const availableTags = TagsData.map((tag) => ({ value: tag, label: tag }));
+const initialTags = TagsData.map((tag) => ({ value: tag, label: tag }));
 
 const accessOptions = [
   { value: 'All', label: 'All (default)' },
@@ -24,6 +25,7 @@ interface CreateFolderModalProps {
 
 const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, onCreateFolder, onDeleteFolder }) => {
   const [folderName, setFolderName] = useState('');
+  const [availableTags, setAvailableTags] = useState(initialTags);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [access, setAccess] = useState<MockFile['access']>('All');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +35,13 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
     setFolderName('');
     setSelectedTag(null);
     setAccess('All');
+  };
+
+  const handleCreateTag = (newTagValue: string) => {
+    const newTag = { value: newTagValue, label: newTagValue };
+    if (!availableTags.some(tag => tag.value.toLowerCase() === newTagValue.toLowerCase())) {
+        setAvailableTags((prevTags) => [...prevTags, newTag]);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -54,7 +63,6 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
     onCreateFolder(newFolder);
 
     const toastId = `folder-created-${newFolder.id}`;
-
     toast(
       <FolderCreatedToast
         toastId={toastId}
@@ -75,7 +83,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -85,11 +93,11 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-gray-900/30" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -98,13 +106,13 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              {/* 👇 Applied overflow-visible here */}
-              <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white text-left align-middle shadow-xl transition-all overflow-visible">
+              <DialogPanel className="w-full max-w-lg transform rounded-lg bg-white text-left align-middle shadow-xl transition-all overflow-visible">
                 <div className="flex items-center justify-between px-6 pt-6">
-                  <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-900">
+                  <DialogTitle as="h3" className="text-xl font-medium leading-6 text-gray-900">
                     New Folder
-                  </Dialog.Title>
+                  </DialogTitle>
                   <button
+                    type="button"
                     onClick={onClose}
                     className="text-gray-400 hover:text-gray-600"
                     aria-label="Close modal"
@@ -133,11 +141,12 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
                     </div>
                     
                     <div className="flex items-start gap-4">
-                      <CustomSelect
+                      <CreatableSelect
                         label="Tag"
                         value={selectedTag}
                         onChange={setSelectedTag}
                         options={availableTags}
+                        onCreate={handleCreateTag}
                       />
                       <CustomSelect
                         label="Access"
@@ -169,8 +178,8 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
                     </button>
                   </div>
                 </form>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
