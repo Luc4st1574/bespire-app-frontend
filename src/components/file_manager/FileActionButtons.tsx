@@ -7,14 +7,11 @@ import { MockFile } from "@/data/mock-files";
 
 interface GetStartedFileManagerProps {
   onFolderCreated: (newFolder: MockFile) => void;
-  onDeleteFolder: (folderId: string) => void; // Add prop for delete handler
+  onDeleteFolder: (folderId: string) => void;
 }
 
 export default function GetStartedFileManager({ onFolderCreated, onDeleteFolder }: GetStartedFileManagerProps) {
   const [isCreateFolderModalOpen, setCreateFolderModalOpen] = useState(false);
-
-  // This component now just passes the props through to the modal.
-  // The logic for creating the folder object is now inside CreateFolderModal.
 
   const createFolderAction = () => setCreateFolderModalOpen(true);
   const uploadFilesAction = () => alert("Upload Files button clicked!");

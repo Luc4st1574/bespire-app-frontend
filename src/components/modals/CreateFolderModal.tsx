@@ -5,11 +5,9 @@ import { X } from 'lucide-react';
 import CustomSelect from './CustomSelect';
 import { toast } from 'sonner';
 import FolderCreatedToast from '../ui/FolderCreatedToast';
+import TagsData from '@/data/tags.json';
 
-const availableTags = [
-  'Email Marketing', 'Social Media', 'Branding', 'Q4 Campaign',
-  'UX/UI', 'Analytics', 'Content Strategy',
-].map((tag) => ({ value: tag, label: tag }));
+const availableTags = TagsData.map((tag) => ({ value: tag, label: tag }));
 
 const accessOptions = [
   { value: 'All', label: 'All (default)' },
@@ -25,7 +23,6 @@ interface CreateFolderModalProps {
 }
 
 const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, onCreateFolder, onDeleteFolder }) => {
-  // --- All internal state and logic remains the same ---
   const [folderName, setFolderName] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [access, setAccess] = useState<MockFile['access']>('All');
@@ -56,12 +53,8 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
 
     onCreateFolder(newFolder);
 
-    // --- Sonner Toast Implementation ---
-    // Generate a unique ID for the toast
     const toastId = `folder-created-${newFolder.id}`;
-    
-    // Call sonner's toast with the custom component
-    // Pass the necessary props: toastId, folderId, and the onUndo function
+
     toast(
       <FolderCreatedToast
         toastId={toastId}
@@ -105,7 +98,8 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({ isOpen, onClose, 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+              {/* 👇 Applied overflow-visible here */}
+              <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white text-left align-middle shadow-xl transition-all overflow-visible">
                 <div className="flex items-center justify-between px-6 pt-6">
                   <Dialog.Title as="h3" className="text-xl font-medium leading-6 text-gray-900">
                     New Folder

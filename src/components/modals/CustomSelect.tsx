@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-// 👇 Import CheckIcon and the new ChevronDown icon
 import { CheckIcon, ChevronDown } from 'lucide-react';
 
-// Define the shape of each option
 interface SelectOption {
     value: string;
     label: string;
 }
 
-// Define the props for the component
 interface CustomSelectProps {
     label: string;
     value: string | null;
@@ -43,7 +40,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ label, value, onChange, opt
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
                 >
-                <Listbox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {/* 👇 Increased z-index to 50 */}
+                <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {options.map((option) => (
                     <Listbox.Option
                         key={option.value}

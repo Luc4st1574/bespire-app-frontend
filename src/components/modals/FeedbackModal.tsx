@@ -92,6 +92,7 @@ export default function FeedbackModal({
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-black"
+              title="Close"
             >
               <X className="w-5 h-5" />
             </button>
@@ -128,8 +129,10 @@ export default function FeedbackModal({
 
           {/* Others */}
           <div className="mb-6">
-            <p className="font-medium text-sm text-gray-700 mb-1">Others</p>
+            <label htmlFor="custom-category-select" className="font-medium text-sm text-gray-700 mb-1">Others</label>
             <select
+              id="custom-category-select"
+              title="Select a category"
               value={customCategory}
               onChange={(e) => {
                 setCustomCategory(e.target.value);
