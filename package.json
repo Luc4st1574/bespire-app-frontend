@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@fortawesome/react-fontawesome": "^0.2.3",
     "@headlessui/react": "^2.2.4",
     "@hookform/resolvers": "^5.0.1",
     "@lexical/history": "^0.32.1",
