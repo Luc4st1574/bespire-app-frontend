@@ -1,5 +1,5 @@
 import { Fragment, useState, useCallback, useEffect } from 'react';
-import { Dialog, Transition, TransitionChild } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { UploadCloud, X, File, Info } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 
@@ -38,11 +38,11 @@ function SupportedFormatsModal({ isOpen, onClose }: SupportedFormatsModalProps) 
                 <div className="fixed inset-0 overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
                         <TransitionChild as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 flex items-center gap-2">
+                            <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900 flex items-center gap-2">
                                     <Info className="text-[#697D67]" size={20}/>
                                     Supported File Formats
-                                </Dialog.Title>
+                                </DialogTitle>
                                 <div className="mt-4 space-y-3 max-h-80 overflow-auto pr-2">
                                     {formatCategories.map(category => (
                                         <div key={category.title}>
@@ -66,7 +66,7 @@ function SupportedFormatsModal({ isOpen, onClose }: SupportedFormatsModalProps) 
                                         Got it!
                                     </button>
                                 </div>
-                            </Dialog.Panel>
+                            </DialogPanel>
                         </TransitionChild>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ export function UploadFilesModal({ open, onClose, onUpload }: UploadFilesModalPr
                     <div className="fixed inset-0 overflow-y-auto">
                         <div className="flex min-h-full items-center justify-center p-4 text-center">
                             <TransitionChild as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
-                                <Dialog.Panel className="w-full max-w-xl p-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl flex flex-col relative">
+                                <DialogPanel className="w-full max-w-xl p-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl flex flex-col relative">
                                     
                                     {/* --- MODIFIED HEADER --- */}
                                     <button
@@ -132,9 +132,9 @@ export function UploadFilesModal({ open, onClose, onUpload }: UploadFilesModalPr
                                         <X size={32} />
                                     </button>
                                     <div className="mb-6">
-                                        <Dialog.Title as="h3" className="text-3xl font-semibold text-gray-900">
+                                        <DialogTitle as="h3" className="text-3xl font-light text-gray-900">
                                             Upload Files
-                                        </Dialog.Title>
+                                        </DialogTitle>
                                     </div>
                                     
                                     {/* --- MODIFIED DRAG & DROP AREA --- */}
@@ -164,7 +164,7 @@ export function UploadFilesModal({ open, onClose, onUpload }: UploadFilesModalPr
                                     {/* --- NEW SUPPORTED FORMATS TEXT --- */}
                                     <div className="mt-4 text-center text-sm text-gray-600 whitespace-nowrap">
                                         Upload your JPG, PNG, PDF, MP4, DOCX, PPTX files. See
-                                        <button onClick={() => setFormatsModalOpen(true)} className="ml-1 text-black font-medium underline hover:text-[#697D67]">
+                                        <button type="button" onClick={() => setFormatsModalOpen(true)} className="ml-1 text-black font-medium underline hover:text-[#697D67]">
                                             (supported formats)
                                         </button>
                                     </div>
@@ -188,7 +188,7 @@ export function UploadFilesModal({ open, onClose, onUpload }: UploadFilesModalPr
                                         </button>
                                     </div>
 
-                                </Dialog.Panel>
+                                </DialogPanel>
                             </TransitionChild>
                         </div>
                     </div>
